@@ -1,0 +1,19 @@
+[build]
+base = "frontend"
+command = "npm run build"
+publish = "dist"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+[build.environment]
+NODE_VERSION = "18.17.1"
+VITE_API_URL = "https://your-backend-url.com"
+
+[context.production]
+environment = { VITE_API_URL = "https://your-backend-url.com" }
+
+[context.deploy-preview]
+environment = { VITE_API_URL = "https://your-backend-url.com" }
