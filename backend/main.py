@@ -7,6 +7,7 @@ import schemas
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+import crud
 
 # Load environment variables
 load_dotenv()
