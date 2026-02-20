@@ -16,12 +16,13 @@ function App() {
 
   const checkApiConnection = async () => {
     try {
-      const response = await fetch("http://localhost:8000/")
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000"
+      const response = await fetch(`${apiUrl}/`)
       if (response.ok) {
         setIsConnected(true)
       }
     } catch (error) {
-      console.warn("Backend not running on localhost:8000")
+      console.warn("Backend not responding")
       setIsConnected(false)
     }
   }
