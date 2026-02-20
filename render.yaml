@@ -11,7 +11,13 @@ services:
         scope: build,runtime
         sync: false
       - key: CORS_ORIGINS
-        value: https://your-frontend-url.vercel.app
+        value: https://YOUR_VERCEL_DOMAIN.vercel.app
+        scope: build,runtime
+      - key: ALLOW_CORS_ALL
+        value: "false"
+        scope: build,runtime
+      - key: DEBUG
+        value: "false"
         scope: build,runtime
 
   - type: pserv

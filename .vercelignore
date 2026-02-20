@@ -1,0 +1,16 @@
+# Vercel deployment — ignore backend and unnecessary files
+backend
+.env
+.env.local
+.env.*.local
+.venv
+__pycache__
+*.py
+node_modules
+.git
+.gitignore
+README.md
+DEPLOYMENT*.md
+SETUP_GUIDE.md
+render.yaml
+run_backend.*

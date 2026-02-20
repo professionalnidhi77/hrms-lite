@@ -1,13 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from database import engine, Base, SessionLocal
-import models
-import schemas
+from .database import engine, Base, SessionLocal
+from . import models
+from . import schemas
 from datetime import datetime
 import os
 from dotenv import load_dotenv
-import crud
+import re
 
 # Load environment variables
 load_dotenv()
@@ -27,23 +27,38 @@ if cors_origins_env:
     # Production: use specific origins
     cors_origins = [origin.strip() for origin in cors_origins_env.split(",")]
 else:
-    # Development: allow localhost and common dev URLs
+    # Development: allow localhost and common dev/preview URLs
     cors_origins = [
+        "http://localhost:3000",      # Frontend dev
         "http://localhost:5173",      # Vite dev server
-        "http://localhost:3000",      # Alternative React dev
-        "http://127.0.0.1:5173",
+        "http://localhost:4173",      # Vite preview
         "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:4173",
+        "https://localhost:3000",
         "https://localhost:5173",
+        "https://localhost:4173",
+        # Allow all Vercel preview deployments
+        "https://*.vercel.app",
+        # Allow all render.com domains
+        "https://*.onrender.com",
+        # Allow localhost on any port for development
+        "http://localhost",
+        "http://127.0.0.1",
     ]
 
-# For production deployment, also allow any HTTPS origin (Vercel/Netlify/etc)
-# This is safe if your API only allows authenticated requests
-if os.getenv("ALLOW_CORS_ALL") == "true":
+# Allow permissive CORS for local/preview debugging
+if os.getenv("DEBUG", "false").lower() == "true":
+    cors_origins = ["*"]
+
+# For production, allow all origins if explicitly enabled
+if os.getenv("ALLOW_CORS_ALL", "false").lower() == "true":
     cors_origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
+    allow_origin_regex=r"https://.*\.(vercel\.app|onrender\.com)|http://.*" if "*" not in cors_origins else None,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
