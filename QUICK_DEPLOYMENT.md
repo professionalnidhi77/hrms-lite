@@ -53,7 +53,7 @@ Follow these steps to deploy your HRMS-Lite application to production.
 
 - [ ] Connect and push:
   ```bash
-  git remote add origin https://github.com/YOUR_USERNAME/hrms-lite.git
+  git remote add origin https://github.com/professionalnidhi77/hrms-lite.git
   git branch -M main
   git push -u origin main
   ```
