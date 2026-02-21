@@ -3,15 +3,15 @@ services:
     name: hrms-lite-api
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 8000
-    root: backend
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port 8000
+    root: .
     envVars:
       - key: DATABASE_URL
         scope: build,runtime
         sync: false
       - key: CORS_ORIGINS
-        value: https://YOUR_VERCEL_DOMAIN.vercel.app
+        value: https://your-vercel-domain.vercel.app
         scope: build,runtime
       - key: ALLOW_CORS_ALL
         value: "false"
